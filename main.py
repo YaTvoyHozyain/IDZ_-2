@@ -1,4 +1,3 @@
-
 def start():
 
     print("Enter a bracket expression:")
