@@ -1,3 +1,4 @@
+
 def start():
 
     print("Enter a bracket expression:")
@@ -103,8 +104,13 @@ class MainClass():
     def signs(self):
         if (sym == '+') or (sym == '-') or (sym == '/'):
             read()
+            if (sym == '+') or (sym == '-') or (sym == '/'):
+                print("Знаки стоят друг за другом")
+                error()
+            elif (sym == '#'):
+                print("Последний символ знак")
+                error()
             self.expression()
-
 
 def main():
     global sym
