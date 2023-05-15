@@ -1,4 +1,3 @@
-
 def start():
 
     print("Enter a bracket expression:")
@@ -8,6 +7,22 @@ def start():
     sym = 'a'
     return input_str, sym, i
 
+letters = "abcdefghijklmnopqrstuvwxyz"
+signs = "+-/*"
+
+
+def Letter(sym):
+    if sym in letters:
+        return 1
+    else:
+        return 0
+
+
+def Sign(sym):
+    if sym in signs:
+        return 1
+    else:
+        return 0
 
 class ParseError(Exception):
     def __init__(self):
@@ -28,89 +43,121 @@ class MainClass():
 
     #Формула
     def formula(self):
-        self.expression()
+        self.expression_0()
         if (sym == '#'):
             return
         error()
 
 
     #Выражение
-    def expression(self):
+    def expression_0(self):
         if (sym == '('):
-            self.expression_round()
+            self.expression_round_0()
         elif (sym == '['):
-            self.expression_square()
-        elif (sym == 'a') or (sym == 'b') or (sym == 'c') or (sym == 'd'):
-            self.alphabet()
-        elif (sym == '+') or (sym == '-') or (sym == '/'):
-            self.signs()
+            self.expression_square_0()
+        elif Letter(sym):
+            self.alphabet_0()
 
-
-    #Выражение в круглых скобках
-    def expression_round(self):
+    #Выражение в круглых скобках 0
+    def expression_round_0(self):
         if (sym == '('):
             read()
-            if (sym == 'a') or (sym == 'b') or (sym == 'c') or (sym == 'd'):
-                read()
-                if (sym == ')'):
-                    print("Буква в скобках")
-                    error()
-            self.expression()
+            self.expression_2()
             if (sym == ')'):
                 read()
-                if (sym == '('):
-                    print("Нарушено правило чередования скобок")
-                    error()
-            elif (sym == '*'):
-                print("Недопустимый символ")
-                error()
             else:
                 print("Скобка не закрыта")
                 error()
-            self.expression()
+            self.expression_round_1()
+
+    # Выражение в круглых скобках 1
+    def expression_round_1(self):
+        if Sign(sym):
+            read()
+            self.expression_round_2()
+        elif (sym == '[') or Letter(sym):
+            self.expression_round_2()
+
+
+    # Выражение в круглых скобках 2
+    def expression_round_2(self):
+        if (sym == '['):
+            self.expression_square_0()
+        elif Letter(sym):
+            self.alphabet_0()
+        else:
+            error()
+
+
+    def alphabet_0(self):
+        read()
+        self.alphabet_1()
+
+
+    def alphabet_1(self):
+        if Sign(sym):
+            read()
+            self.expression_0()
+        elif (sym == '(') or (sym == '[') or Letter(sym):
+            self.expression_0()
+
+
+    def alphabet_2(self):
+        read()
+        self.alphabet_3()
+
+
+    def alphabet_3(self):
+        if Sign(sym):
+            read()
+            self.expression_0()
+        elif (sym == '(') or (sym == '[') or Letter(sym):
+            self.expression_0()
+        else: error()
+
+
+    def expression_2(self):
+        if (sym == '('):
+            self.expression_round_0()
+        elif (sym == '['):
+            self.expression_square_0()
+        elif Letter(sym):
+            self.alphabet_2()
+        else:
+            error()
 
 
     # Выражение в квадратных скобках
-    def expression_square(self):
+    def expression_square_0(self):
         if (sym == '['):
             read()
-            if (sym == 'a') or (sym == 'b') or (sym == 'c') or (sym == 'd'):
-                read()
-                if (sym == ']'):
-                    print("Буква в скобках")
-                    error()
-            self.expression()
+            self.expression_2()
             if (sym == ']'):
                 read()
-                if (sym == '['):
-                    print("Нарушено правило чередования скобок")
-                    error()
-            elif (sym == '*'):
-                print("Недопустимый символ")
-                error()
             else:
                 print("Скобка не закрыта")
                 error()
-            self.expression()
+            self.expression_square_1()
 
 
-    # Алфавит
-    def alphabet(self):
-        if (sym == 'a') or (sym == 'b') or (sym == 'c') or (sym == 'd'):
+    # Выражение в квадратных скобках
+    def expression_square_1(self):
+        if Sign(sym):
             read()
-            self.expression()
+            self.expression_square_2()
+        elif (sym == '(') or Letter(sym):
+            self.expression_square_2()
 
-    # Знаки
-    def signs(self):
-        if (sym == '+') or (sym == '-') or (sym == '/'):
-            read()
-            if (sym == '+') or (sym == '-') or (sym == '/'):
-                print("Знаки стоят друг за другом")
-                error()
-            elif (sym == '#'):
-                print("Последний символ знак")
-                error()
-            self.expression()
+
+    # Выражение в квадратных скобках
+    def expression_square_2(self):
+        if (sym == '('):
+            self.expression_round_0()
+        elif Letter(sym):
+            self.alphabet_0()
+        else:
+            error()
+
 
 def main():
     global sym
